@@ -270,6 +270,14 @@ def parse_section_header(raw_value, fg_code):
     }
 
 
+def find_section_header(row, fg_code):
+    for key in ("SL.NO", "SL NO", "ITEM NO.", "ITEM NO", "DRAWING NO"):
+        section = parse_section_header(row.get(key), fg_code)
+        if section:
+            return section
+    return None
+
+
 def should_record_skipped_row(row):
     preview = (
         clean(row.get("DRAWING NO")),
@@ -308,8 +316,7 @@ def parse_customized_bom(source, filename=None):
             if not any(row.values()):
                 continue
 
-            sl_value = row.get("SL.NO") or row.get("SL NO") or ""
-            section = parse_section_header(sl_value, fg_code)
+            section = find_section_header(row, fg_code)
             if section:
                 current_section = {**section, "rows": []}
                 sections.append(current_section)

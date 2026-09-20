@@ -94,6 +94,7 @@ for parsed in parsed_products:
 if errors:
     st.error("Some files could not be parsed.")
     st.dataframe(pd.DataFrame(errors), width="stretch", hide_index=True)
+    st.caption("If a valid multi-level BOM fails here, the error table above is the source of truth. It will show the exact parse reason for that file.")
 
 if summary_rows:
     st.subheader("Detected Workbooks")
